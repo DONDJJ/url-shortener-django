@@ -14,7 +14,8 @@
     Старая: <br>
     <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
     Новая: <br>
-    <a href="{{url.new_short_url}}">{{url.new_short_url}}</a>
+    <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
+    <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Удалить!</a>
 </div>
 {%endfor%}
 {% endblock %}

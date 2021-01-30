@@ -13,15 +13,7 @@ class ShortenedUrl(models.Model):
     new_short_url = models.URLField(max_length=50, verbose_name="Сокращенная ссылка")
 
     class Meta:
-        ordering=['-pk']
-    # url_clicks=None
-
-
-    # def __init__(self, pk, user, original_url, new_short_url=None, *args):
-    #     super(ShortenedUrl, self).__init__()
-    #     self.user_creator = user
-    #     self.original_url = original_url
-    #     self.new_short_url = ShortenedUrl.get_shortened_url()
+        ordering = ['-pk']
 
     def save(self, user, original_url):
         self.user_creator = user
