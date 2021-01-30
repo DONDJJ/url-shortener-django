@@ -1,0 +1,17 @@
+body div.container{
+    background-color:#f4f4f2;
+}
+
+footer{
+    background-color:#495464;
+    color: #e8e8e8;
+}
+a.ref-down{
+    color:#bbbfca;
+}
+#top_menu{
+    background-color:#e8e8e8;
+}
+form{
+    max-width:50px;
+}
