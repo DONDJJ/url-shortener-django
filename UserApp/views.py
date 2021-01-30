@@ -16,7 +16,6 @@ def ProfileView(request):
 class UserLoginView(LoginView):
     template_name = 'UserApp/login.html'
     form_class = LoginForm
-    # redirect_field_name = reverse_lazy('profile_url')
 
 
 class UserCreateView(CreateView):

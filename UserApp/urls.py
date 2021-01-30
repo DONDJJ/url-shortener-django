@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 from UrlShortenerApp.urls import urlpatterns
+
 urlpatterns = [
     path('profile', ProfileView, name='profile_url'),
     path('login/', UserLoginView.as_view(), name='login_url'),
