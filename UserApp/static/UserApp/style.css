@@ -15,3 +15,7 @@ a.ref-down{
 form{
     max-width:50px;
 }
+
+#url_profile_item{
+    word-wrap:break-word;
+}

@@ -8,7 +8,7 @@ import random
 # Create your models here.
 class ShortenedUrl(models.Model):
     user_creator = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Создатель ссылки",
-                                     related_name="urls")
+                                     related_name="urls", null=True)
     original_url = models.URLField(max_length=300, verbose_name="Оригинальная ссылка")
     new_short_url = models.URLField(max_length=50, verbose_name="Сокращенная ссылка")
 

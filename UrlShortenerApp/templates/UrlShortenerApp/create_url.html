@@ -3,7 +3,18 @@
 {% block title %}Create New URL{% endblock %}
 
 {% block content %}
-<br><br>
+<br>
+{% if user_logged_in%}
+{% else%}
+<div class="alert alert-info">Если вы сокращаете ссылку без регистрации - в дальнейшем вы не сможете найти ее
+    в личном кабинете и заново скопировать/посмотреть статистику</div>
+{%endif%}
+{%if prev_url%}
+<div class="alert alert-success">Готово: <br>
+    <a href="{{prev_url}}">{{prev_url}}</a></div>
+{%endif%}
+<br>
+<div>Введите новую ссылку в поле ниже и мы сократим ее!</div>
 <form method="post">
     {%csrf_token%}
     {{form.user_original_url}}

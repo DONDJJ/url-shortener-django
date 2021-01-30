@@ -7,13 +7,13 @@
 
 {% block content %}
 <br>
-<p>{{current_user.username}}</p>
-<p>{{current_user.data_joined}}</p>
-<p>{{current_user.last_login}}</p>
+<h2>Имя: {{current_user.username}}</h2>
 <h2>Ваши сокращенные ссылки:</h2>
 {%for url in current_user.urls.all%}
-<div class="alert alert-info">
-    <a href="{{url.original_url}}">{{url.original_url}}</a> <br>
+<div id = "url_profile_item" class="alert alert-info">
+    Старая: <br>
+    <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
+    Новая: <br>
     <a href="{{url.new_short_url}}">{{url.new_short_url}}</a>
 </div>
 {%endfor%}
