@@ -1,0 +1,25 @@
+{% extends 'layouts/layout.html'%}
+
+{% block title %}
+    {{current_user.username}}
+{% endblock %}
+{% block content %}
+{%if user_inactive_urls%}
+    <br>
+    {%for url in user_inactive_urls%}
+        <div id = "url_profile_item" class="alert alert-info">
+            Старая: <br>
+            <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
+            Новая: <br>
+            <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
+            <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Извлечь из архива</a>
+        </div>
+    {%endfor%}
+{%else%}
+    <br>
+    <h2>Теперь тут ничего нет</h2><br>
+        <a class="p-2 btn btn-outline-primary" href="{%url 'profile_url'%}">Вернуться в профиль</a>
+    <br>
+{%endif%}
+<br>
+{% endblock %}

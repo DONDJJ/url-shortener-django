@@ -8,14 +8,17 @@
 {% block content %}
 <br>
 <h2>Имя: {{current_user.username}}</h2>
+<h3><a href="{%url 'hidden_urls_url'%} " >Архивные ссылки</a></h3>
 <h2>Ваши сокращенные ссылки:</h2>
-{%for url in current_user.urls.all%}
+{%for url in user_active_urls%}
+
 <div id = "url_profile_item" class="alert alert-info">
     Старая: <br>
     <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
     Новая: <br>
     <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
-    <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Удалить!</a>
+    <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Переместить в архив</a>
 </div>
+
 {%endfor%}
 {% endblock %}

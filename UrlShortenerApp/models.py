@@ -10,6 +10,7 @@ class ShortenedUrl(models.Model):
                                      related_name="urls", null=True)
     original_url = models.URLField(max_length=300, verbose_name="Оригинальная ссылка")
     new_short_url = models.URLField(max_length=50, verbose_name="Сокращенная ссылка")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['-pk']

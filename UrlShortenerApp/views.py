@@ -38,7 +38,10 @@ def shorted_url_handler(request):
     return HttpResponseRedirect(original_URL_fromDB.original_url)
 
 
-def delete_url_view(request, url_for_delete):
-    instance = ShortenedUrl.objects.filter(pk=url_for_delete).delete()
-    # instance.delete()
-    return redirect('profile_url')
+def change_url_status_view(request, url_for_delete):
+    if ShortenedUrl.objects.get(pk=url_for_delete).is_active:
+        ShortenedUrl.objects.filter(pk=url_for_delete).update(is_active=False)
+        return redirect('profile_url')
+    else:
+        ShortenedUrl.objects.filter(pk=url_for_delete).update(is_active=True)
+        return redirect('hidden_urls_url')
