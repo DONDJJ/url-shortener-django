@@ -1,0 +1,10 @@
+{% extends 'layouts/layout.html'%}
+
+{% block title %}Подробнее{% endblock %}
+
+{% block content %}
+{%for date, count in js%}
+<p>{{date}} - {{count}}</p>
+{%endfor%}
+
+{% endblock %}

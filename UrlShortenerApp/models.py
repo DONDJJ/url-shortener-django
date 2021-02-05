@@ -34,4 +34,6 @@ class ShortenedUrl(models.Model):
 
 
 class UrlClick(models.Model):
-    pass
+    related_url=models.ForeignKey(ShortenedUrl, on_delete=models.PROTECT, verbose_name="Соответствующая ссылка",
+                                  related_name='clicks')
+    click_date=models.DateField(auto_now_add=True, null=True)
