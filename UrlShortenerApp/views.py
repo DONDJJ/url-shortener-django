@@ -1,5 +1,9 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseForbidden
 from django.shortcuts import render, redirect
+from django.views import View
+from django.views.generic import ListView
+from django.views.generic.base import TemplateResponseMixin, TemplateView
+
 from .forms import EnterUrlForm
 from .models import ShortenedUrl, UrlClick
 from UserApp.models import User
@@ -7,7 +11,9 @@ from PetProject.settings import SITE_BASE_URL
 from django.urls import reverse_lazy
 from datetime import date, timedelta
 
+
 def create_url_view(request, **kwargs):
+    """Создание URL"""
     if request.method == 'POST':
         form = EnterUrlForm(request.POST)
         if form.is_valid():
@@ -18,11 +24,11 @@ def create_url_view(request, **kwargs):
             else:
                 su.save(User.objects.get(pk=1), form.cleaned_data['user_original_url'])
             prev_url = su.new_short_url
-            return HttpResponseRedirect(f'/urls/create_url/?url={prev_url}')
+            return redirect(f'/urls/create_url/?url={prev_url}')
 
     else:
 
-        prev_url = request.GET.get('url', None)
+        prev_url = request.GET.get('url', None)  # извлечение GET параметра - предыдущего созданного URL
         form = EnterUrlForm()
 
     return render(request, 'UrlShortenerApp/create_url.html',
@@ -31,17 +37,26 @@ def create_url_view(request, **kwargs):
 
 
 def shorted_url_handler(request):
+    """
+    Обработчик сокращенных адресов.
+    Вызывается каждый раз при переходе по сокращенной ссылке и подставляет
+    в адресную строку исходную ссылку
+    """
     request_url = request.get_full_path()
     final_url = SITE_BASE_URL + request_url[1:]
     # return HttpResponse(final_url)
     original_URL_fromDB = ShortenedUrl.objects.get(new_short_url=final_url)
     u = UrlClick()
-    u.related_url=original_URL_fromDB
+    u.related_url = original_URL_fromDB
     u.save()
-    return HttpResponseRedirect(original_URL_fromDB.original_url)
+    # return HttpResponseRedirect(original_URL_fromDB.original_url,status=404)
+    return redirect(original_URL_fromDB.original_url)
 
 
 def change_url_status_view(request, url_for_delete):
+    """
+    Если ссылка неактивна - делает ее активной и наоборот
+    """
     if ShortenedUrl.objects.get(pk=url_for_delete).is_active:
         ShortenedUrl.objects.filter(pk=url_for_delete).update(is_active=False)
         return redirect('profile_url')
@@ -51,12 +66,22 @@ def change_url_status_view(request, url_for_delete):
 
 
 def statistic_about_url(request, url_for_stat):
-    all_clicks=UrlClick.objects.filter(related_url=ShortenedUrl(pk=url_for_stat)).count()
+    all_clicks = UrlClick.objects.filter(related_url=ShortenedUrl(pk=url_for_stat)).count()
     delta = timedelta(days=1)
     today = date.today()
-    list_of_30_days=[today-delta*i for i in range(30)]
-    all={datestring:len(count_of_clicks) for
-         datestring, count_of_clicks in
-         zip(list_of_30_days, [UrlClick.objects.filter(related_url=ShortenedUrl(pk=url_for_stat), click_date=list_of_30_days[i]) for i in range(30)])}
-    return render(request, 'UrlShortenerApp/statistic.html', {'js':all.items()})
-
+    list_of_30_days = [today - delta * i for i in range(30)]  # 30 предыдущих дней начиная с сегодняшнего
+    full_stat = {datestring: len(count_of_clicks) for
+                 datestring, count_of_clicks in
+                 zip(
+                         list_of_30_days,
+                         [UrlClick.objects.filter(
+                             related_url=ShortenedUrl(pk=url_for_stat),
+                             click_date=day
+                         ) for day in list_of_30_days
+                         ]
+                     )
+                 }
+    return render(request, 'UrlShortenerApp/statistic.html', {'full_stat': full_stat.items(),
+                                                              'request':request,
+                                                              'current_user':request.user,
+                                                              'user_logged_in':request.user.is_authenticated})

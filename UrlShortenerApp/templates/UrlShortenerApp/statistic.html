@@ -3,7 +3,9 @@
 {% block title %}Подробнее{% endblock %}
 
 {% block content %}
-{%for date, count in js%}
+<br>
+<h3><a href="{%url 'profile_url'%}" class="btn btn-outline-primary">Вернуться назад</a></h3>
+{%for date, count in full_stat%}
 <p>{{date}} - {{count}}</p>
 {%endfor%}
 

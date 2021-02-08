@@ -3,17 +3,28 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import User
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from .forms import RegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
 from UrlShortenerApp.models import ShortenedUrl
 
 
-def profile_view(request):   # страница отображения активных ссылок
-    appropriate_urls = ShortenedUrl.objects.filter(is_active=True, user_creator=request.user)
-    return HttpResponse(render(request, 'UserApp/profile.html',
-                               {'current_user': request.user, 'user_logged_in': request.user.is_authenticated,
-                                "user_active_urls": appropriate_urls}))
+class ProfileView(ListView):
+    template_name = 'UserApp/profile.html'
+    context_object_name = 'user_active_urls'
+
+    def setup(self, request, *args, **kwargs):
+        self.request = request
+
+    def get_queryset(self):
+        return ShortenedUrl.objects.filter(is_active=True, user_creator=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['request'] = self.request
+        context['current_user'] = self.request.user
+        context['user_logged_in'] = self.request.user.is_authenticated
+        return context
 
 
 class UserLoginView(LoginView):
@@ -32,8 +43,19 @@ def logout_view(request):
     return redirect('login_url')
 
 
-def hidden_urls_view(request):  # страница отображения неактивных ссылок
-    appropriate_urls = ShortenedUrl.objects.filter(is_active=False, user_creator=request.user)
-    return HttpResponse(render(request, 'UserApp/hidden_urls.html',
-                               {'current_user': request.user, 'user_logged_in': request.user.is_authenticated,
-                                "user_inactive_urls": appropriate_urls}))
+class HiddenUrlsView(ListView):
+    template_name = 'UserApp/hidden_urls.html'
+    context_object_name = 'user_inactive_urls'
+
+    def setup(self, request, *args, **kwargs):
+        self.request = request
+
+    def get_queryset(self):
+        return ShortenedUrl.objects.filter(is_active=False, user_creator=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['request'] = self.request
+        context['current_user'] = self.request.user
+        context['user_logged_in'] = self.request.user.is_authenticated
+        return context
