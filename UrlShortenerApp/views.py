@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
 from django.views.generic.base import TemplateResponseMixin, TemplateView
+from django.views.generic.edit import ProcessFormView, FormView
 
 from .forms import EnterUrlForm
 from .models import ShortenedUrl, UrlClick
@@ -12,28 +13,34 @@ from django.urls import reverse_lazy
 from datetime import date, timedelta
 
 
-def create_url_view(request, **kwargs):
-    """Создание URL"""
-    if request.method == 'POST':
-        form = EnterUrlForm(request.POST)
-        if form.is_valid():
-            su = ShortenedUrl()
-            # su = ShortenedUrl(pk=None, user=request.user, original_url=form.cleaned_data['user_original_url'])
-            if isinstance(request.user, User):
-                su.save(request.user, form.cleaned_data['user_original_url'])
-            else:
-                su.save(User.objects.get(pk=1), form.cleaned_data['user_original_url'])
-            prev_url = su.new_short_url
-            return redirect(f'/urls/create_url/?url={prev_url}')
+class CreateUrlView(FormView):
+    template_name = 'UrlShortenerApp/create_url.html'
+    form_class = EnterUrlForm
 
-    else:
-
+    def get(self, request, *args, **kwargs):
+        """Выполняется при GET запросе, в самом начале"""
         prev_url = request.GET.get('url', None)  # извлечение GET параметра - предыдущего созданного URL
         form = EnterUrlForm()
+        self.request = request
+        return render(request, 'UrlShortenerApp/create_url.html',
+                      {'form': form, 'current_user': request.user, 'user_logged_in': request.user.is_authenticated,
+                       "prev_url": prev_url})
 
-    return render(request, 'UrlShortenerApp/create_url.html',
-                  {'form': form, 'current_user': request.user, 'user_logged_in': request.user.is_authenticated,
-                   "prev_url": prev_url})
+    def form_valid(self, form):
+        """Обработка введенных в форму данных"""
+        su = ShortenedUrl()
+        if isinstance(self.request.user, User):  # проверка анонимности юзера
+            su.save(self.request.user, form.cleaned_data['user_original_url'])
+        else:
+            su.save(User.objects.get(pk=1), form.cleaned_data['user_original_url'])
+        prev_url = su.new_short_url
+        return HttpResponseRedirect(self.get_success_url(prev_url=prev_url))
+        # return super().form_valid(form)  # базовая версия этого метода, перенаправление по адресу,
+        # # возвращаемому ф-ей get_success_url()
+
+    def get_success_url(self, prev_url):
+        """Return the URL to redirect to after processing a valid form."""
+        return f'/urls/create_url/?url={prev_url}'
 
 
 def shorted_url_handler(request):
@@ -73,15 +80,15 @@ def statistic_about_url(request, url_for_stat):
     full_stat = {datestring: len(count_of_clicks) for
                  datestring, count_of_clicks in
                  zip(
-                         list_of_30_days,
-                         [UrlClick.objects.filter(
-                             related_url=ShortenedUrl(pk=url_for_stat),
-                             click_date=day
-                         ) for day in list_of_30_days
-                         ]
-                     )
+                     list_of_30_days,
+                     [UrlClick.objects.filter(
+                         related_url=ShortenedUrl(pk=url_for_stat),
+                         click_date=day
+                     ) for day in list_of_30_days
+                     ]
+                 )
                  }
     return render(request, 'UrlShortenerApp/statistic.html', {'full_stat': full_stat.items(),
-                                                              'request':request,
-                                                              'current_user':request.user,
-                                                              'user_logged_in':request.user.is_authenticated})
+                                                              'request': request,
+                                                              'current_user': request.user,
+                                                              'user_logged_in': request.user.is_authenticated})

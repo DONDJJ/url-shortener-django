@@ -19,3 +19,8 @@ form{
 #url_profile_item{
     word-wrap:break-word;
 }
+
+footer {
+	flex: 0 0 auto;
+	margin-bottom: 0px;
+}
