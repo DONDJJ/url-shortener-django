@@ -11,7 +11,7 @@ from UrlShortenerApp.models import ShortenedUrl
 
 class ProfileView(ListView):
     template_name = 'UserApp/profile.html'
-    context_object_name = 'user_active_urls'
+    context_object_name = 'user_active_urls'  # имя для QuerySet-a в шаблоне
 
     def setup(self, request, *args, **kwargs):
         self.request = request
@@ -21,9 +21,6 @@ class ProfileView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['request'] = self.request
-        context['current_user'] = self.request.user
-        context['user_logged_in'] = self.request.user.is_authenticated
         return context
 
 
@@ -55,7 +52,4 @@ class HiddenUrlsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['request'] = self.request
-        context['current_user'] = self.request.user
-        context['user_logged_in'] = self.request.user.is_authenticated
         return context

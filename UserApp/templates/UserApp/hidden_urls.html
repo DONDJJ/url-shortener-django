@@ -1,7 +1,7 @@
 {% extends 'layouts/layout.html'%}
 
 {% block title %}
-    {{current_user.username}}
+    {{user.username}}
 {% endblock %}
 {% block content %}
 {%if user_inactive_urls%}

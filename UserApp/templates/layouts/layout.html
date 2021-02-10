@@ -17,7 +17,7 @@
 <!--        <a class="p-2 text-dark" href="#">Список работ</a>-->
 <!--        <a class="p-2 text-dark" href="#">Обо мне</a>-->
       </nav>
-    {%if user_logged_in%}
+    {%if user.is_authenticated%}
     <nav class="my-2 my-md-0 mr-md-3">
     <a class="p-2 btn btn-outline-primary" href="{%url 'profile_url'%}">Профиль</a>
     <a class="p-2 btn btn-outline-primary" href="{%url 'logout_url'%}">Log Out</a>

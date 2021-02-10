@@ -1,13 +1,13 @@
 {% extends 'layouts/layout.html'%}
 
 {% block title %}
-{{current_user.username}}
+{{user.username}}
 {% endblock %}
 
 
 {% block content %}
 <br>
-<h2>Имя: {{current_user.username}}</h2>
+<h2>Имя: {{user.username}}</h2>
 <h3><a href="{%url 'hidden_urls_url'%} " >Архивные ссылки</a></h3>
 <h2>Ваши сокращенные ссылки:</h2>
 {%for url in user_active_urls%}

@@ -4,7 +4,7 @@
 
 {% block content %}
 <br>
-{% if user_logged_in%}
+{% if user.is_authenticated%}
 {% else%}
 <div class="alert alert-info">Если вы сокращаете ссылку без регистрации - в дальнейшем вы не сможете найти ее
     в личном кабинете и заново скопировать/посмотреть статистику</div>

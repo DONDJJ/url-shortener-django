@@ -23,8 +23,7 @@ class CreateUrlView(FormView):
         form = EnterUrlForm()
         self.request = request
         return render(request, 'UrlShortenerApp/create_url.html',
-                      {'form': form, 'current_user': request.user, 'user_logged_in': request.user.is_authenticated,
-                       "prev_url": prev_url})
+                      {'form': form, "prev_url": prev_url})
 
     def form_valid(self, form):
         """Обработка введенных в форму данных"""
@@ -88,7 +87,4 @@ def statistic_about_url(request, url_for_stat):
                      ]
                  )
                  }
-    return render(request, 'UrlShortenerApp/statistic.html', {'full_stat': full_stat.items(),
-                                                              'request': request,
-                                                              'current_user': request.user,
-                                                              'user_logged_in': request.user.is_authenticated})
+    return render(request, 'UrlShortenerApp/statistic.html', {'full_stat': full_stat.items()})
