@@ -10,7 +10,15 @@
 <h2>Имя: {{user.username}}</h2>
 <h3><a href="{%url 'hidden_urls_url'%} " >Архивные ссылки</a></h3>
 <h2>Ваши сокращенные ссылки:</h2>
-{%for url in user_active_urls%}
+{%if page_obj.has_previous %}
+    <div><a href="?page={{page_obj.previous_page_number }}">Прошлая</a></div>
+{% endif %}
+<div>Страница № {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</div>
+{% if page_obj.has_next %}
+<a href= "?page={{page_obj.next_page_number}}" >Следующая</a>
+{% endif %}
+
+{%for url in page_obj %}
 
 <div id = "url_profile_item" class="alert alert-info">
     Старая: <br>

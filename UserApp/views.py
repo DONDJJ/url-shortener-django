@@ -1,4 +1,5 @@
 from django.contrib.auth import login, authenticate, logout
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -12,15 +13,18 @@ from UrlShortenerApp.models import ShortenedUrl
 class ProfileView(ListView):
     template_name = 'UserApp/profile.html'
     context_object_name = 'user_active_urls'  # имя для QuerySet-a в шаблоне
+    paginate_by = 10
+    model = ShortenedUrl
 
     def setup(self, request, *args, **kwargs):
+        super(ProfileView, self).setup(request)
         self.request = request
 
     def get_queryset(self):
         return ShortenedUrl.objects.filter(is_active=True, user_creator=self.request.user)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         return context
 
 
@@ -43,8 +47,11 @@ def logout_view(request):
 class HiddenUrlsView(ListView):
     template_name = 'UserApp/hidden_urls.html'
     context_object_name = 'user_inactive_urls'
+    paginate_by = 10
+    model = ShortenedUrl
 
     def setup(self, request, *args, **kwargs):
+        super().setup(request)
         self.request = request
 
     def get_queryset(self):
