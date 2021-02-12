@@ -8,6 +8,12 @@ from django.views.generic import CreateView, ListView
 from .forms import RegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
 from UrlShortenerApp.models import ShortenedUrl
+from django.template.defaulttags import register
+
+
+@register.filter
+def get_range(value):
+    return range(1, value+1)
 
 
 class ProfileView(ListView):

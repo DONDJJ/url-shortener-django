@@ -10,24 +10,54 @@
 <h2>Имя: {{user.username}}</h2>
 <h3><a href="{%url 'hidden_urls_url'%} " >Архивные ссылки</a></h3>
 <h2>Ваши сокращенные ссылки:</h2>
-{%if page_obj.has_previous %}
-    <div><a href="?page={{page_obj.previous_page_number }}">Прошлая</a></div>
-{% endif %}
-<div>Страница № {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</div>
-{% if page_obj.has_next %}
-<a href= "?page={{page_obj.next_page_number}}" >Следующая</a>
-{% endif %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {%if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number }}">Прошлая</a></li>
+      {% endif %}
+      {%for pages_num in page_obj.paginator.num_pages|get_range%}
+      {% if page_obj.number == pages_num%}
+      <li class="page-item active"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+      {%else%}
+    <li class="page-item"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+      {%endif%}
+      {%endfor%}
+      {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}" >Следующая</a></li>
+      {% endif %}
+  </ul>
+</nav>
 
 {%for url in page_obj %}
 
-<div id = "url_profile_item" class="alert alert-info">
-    Старая: <br>
-    <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
-    Новая: <br>
-    <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
-    <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Переместить в архив</a>
-    <a href="{%url 'url_stat' url.pk%}" class="btn btn-danger">Статка</a>
-</div>
+    <div id = "url_profile_item" class="alert alert-info">
+        Старая: <br>
+        <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
+        Новая: <br>
+        <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
+        <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Переместить в архив</a>
+        <a href="{%url 'url_stat' url.pk%}" class="btn btn-danger">Статка</a>
+    </div>
 
 {%endfor%}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {%if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number }}">Прошлая</a></li>
+      {% endif %}
+      {%for pages_num in page_obj.paginator.num_pages|get_range%}
+      {% if page_obj.number == pages_num%}
+      <li class="page-item active"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+      {%else%}
+    <li class="page-item"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+      {%endif%}
+      {%endfor%}
+      {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}" >Следующая</a></li>
+      {% endif %}
+  </ul>
+</nav>
+
 {% endblock %}
