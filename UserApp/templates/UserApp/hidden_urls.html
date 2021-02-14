@@ -3,8 +3,10 @@
 {% block title %}
     {{user.username}}
 {% endblock %}
+
 {% block content %}
-{%if user_inactive_urls%}
+{% if page_obj.object_list%}
+    {% if page_obj.has_previous or page_obj.has_next %}
 
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -23,7 +25,7 @@
           {% endif %}
       </ul>
     </nav>
-
+    {%endif%}
     <br>
 
     {%for url in user_inactive_urls%}
@@ -43,24 +45,25 @@
     <br>
 
 {%endif%}
-
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-      {%if page_obj.has_previous %}
-    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number }}">Прошлая</a></li>
-      {% endif %}
-      {%for pages_num in page_obj.paginator.num_pages|get_range%}
-      {% if page_obj.number == pages_num%}
-      <li class="page-item active"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
-      {%else%}
-    <li class="page-item"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
-      {%endif%}
-      {%endfor%}
-      {% if page_obj.has_next %}
-    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}" >Следующая</a></li>
-      {% endif %}
-  </ul>
-</nav>
+    {% if page_obj.has_previous or page_obj.has_next %}
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              {%if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number }}">Прошлая</a></li>
+              {% endif %}
+              {%for pages_num in page_obj.paginator.num_pages|get_range%}
+              {% if page_obj.number == pages_num%}
+              <li class="page-item active"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+              {%else%}
+            <li class="page-item"><a class="page-link" href="?page={{pages_num}}">{{pages_num}}</a></li>
+              {%endif%}
+              {%endfor%}
+              {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}" >Следующая</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+    {%endif%}
 
 <br>
 {% endblock %}
