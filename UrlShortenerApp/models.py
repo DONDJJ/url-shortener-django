@@ -82,15 +82,12 @@ class UrlClick(models.Model):
         delta = timedelta(days=1)
         today = date.today()
         list_of_30_days = [today - delta * i for i in range(30)]  # 30 предыдущих дней начиная с сегодняшнего
-        full_stat = {datestring: len(count_of_clicks) for
-                     datestring, count_of_clicks in
-                     zip(
-                         list_of_30_days,
-                         [UrlClick.objects.filter(
-                             related_url=ShortenedUrl(pk=url_for_stat),
-                             click_date=day
-                         ) for day in list_of_30_days
-                         ]
-                     )
-                     }
-        return full_stat.items()
+
+        x_data = [str(datestring) for datestring in list_of_30_days]  # ось х - даты
+        y_data = [len(count_of_clicks)
+                  for count_of_clicks in
+                      [UrlClick.objects.filter(related_url=ShortenedUrl(pk=url_for_stat), click_date=day)
+                       for day in list_of_30_days]
+                  ]  # ось y - количество переходов
+
+        return x_data, y_data

@@ -5,8 +5,23 @@
 {% block content %}
 <br>
 <h3><a href="{%url 'profile_url'%}" class="btn btn-outline-primary">Вернуться назад</a></h3>
-{%for date, count in full_stat%}
-<p>{{date}} - {{count}}</p>
-{%endfor%}
-
+<canvas id="myChart"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!--<script src="../../static/url_stat_chart.js"></script>-->
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{x_data|safe}},
+        datasets: [{
+            label: 'Статистика посещений за последние 10 дней',
+            backgroundColor: 'rgb(200,225,255)',
+            borderColor: 'rgb(73,84,100)',
+            data: {{y_data|safe}}
+        }]
+    },
+    options: {}
+});
+</script>
 {% endblock %}

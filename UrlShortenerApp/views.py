@@ -59,5 +59,5 @@ def change_url_status_view(request, url_for_delete):
 
 def statistic_about_url(request, url_for_stat):
     """Получение статистики для ссылки за последние 30 дней"""
-    statistic = UrlClick.get_statistic_for_url(url_for_stat=url_for_stat)
-    return render(request, 'UrlShortenerApp/statistic.html', {'full_stat': statistic})
+    x_data, y_data = UrlClick.get_statistic_for_url(url_for_stat=url_for_stat)
+    return render(request, 'UrlShortenerApp/statistic.html', {'x_data': x_data, 'y_data': y_data})
