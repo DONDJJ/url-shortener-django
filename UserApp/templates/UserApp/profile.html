@@ -8,6 +8,7 @@
 {% block content %}
 <br>
 <h2>Имя: {{user.username}}</h2>
+<h3><a href="{%url 'user_settings'%}">Настройки</a></h3>
 <h3><a href="{%url 'hidden_urls_url'%} " >Архивные ссылки</a></h3>
 <h2>Ваши сокращенные ссылки:</h2>
 {% if page_obj.object_list%}

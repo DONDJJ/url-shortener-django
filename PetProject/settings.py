@@ -19,12 +19,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('RAZZLE_DJANGO_SECRET_KEY') if os.getenv('RAZZLE_DJANGO_SECRET_KEY') else '+4h5y0lvqyx33g8cme%v%8)gep2d*l^5c!toky+x)$o&-=7%$j'
+SECRET_KEY = os.getenv('RAZZLE_DJANGO_SECRET_KEY') if os.getenv(
+    'RAZZLE_DJANGO_SECRET_KEY') else '+4h5y0lvqyx33g8cme%v%8)gep2d*l^5c!toky+x)$o&-=7%$j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.getenv('RAZZLE_DJANGO_DEBUG') else True
 
-ALLOWED_HOSTS = ['dondj-url.herokuapp.com']
+ALLOWED_HOSTS = ['dondj-url.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'PetProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,16 +116,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/user/profile'
+LOGIN_REDIRECT_URL = '/user/profile'  # адрес перехода после успешного входа на сайт
+LOGIN_URL = '/user/login/'  # адрес перехода не авторизованных пользователей при попытке перехода на закрытую
+# для них страницу
+
+PASSWORD_RESET_TIMEOUT_DAYS = 7  # сколько дней действительна ссылка сброса пароля
+DEFAULT_FROM_EMAIL = 'urlshortener@bk.ru'  # почта, которая используется, например, для отправки подтверждения
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # SITE_BASE_URL ='https://dondj.com/'
 # SITE_BASE_URL='http://127.0.0.1:8000/'
-SITE_BASE_URL='https://dondj-url.herokuapp.com/'
+SITE_BASE_URL = 'https://dondj-url.herokuapp.com/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT= os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 import dj_database_url
+
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)

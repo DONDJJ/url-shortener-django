@@ -6,10 +6,11 @@ from django.urls import reverse_lazy
 from .models import User
 from django.views.generic import CreateView, ListView
 from .forms import RegistrationForm, LoginForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from UrlShortenerApp.models import ShortenedUrl
 from django.template.defaulttags import register
-
+from PetProject.settings import SITE_BASE_URL
+from django.views.generic import TemplateView
 
 @register.filter
 def get_range(value):
@@ -66,3 +67,15 @@ class HiddenUrlsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class ResetPassword(PasswordResetView):
+    template_name = 'UserApp/reset_password.html'
+    subject_template_name = 'UserApp/email_template_subject.txt'  # тема письма
+    html_email_template_name = 'UserApp/password_reset_email_body.html'
+    success_url = reverse_lazy('password_reset_done')
+    extra_email_context = {'SITE_BASE_URL':SITE_BASE_URL, }
+
+
+class UserSettings(TemplateView):
+    template_name = 'UserApp/user_settings.html'

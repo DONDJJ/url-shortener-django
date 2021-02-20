@@ -13,7 +13,8 @@ a.ref-down{
     background-color:#e8e8e8;
 }
 form{
-    max-width:50px;
+    max-width:700px;
+    text-align:left;
 }
 
 #url_profile_item{
