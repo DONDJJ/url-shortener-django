@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import *
 from UrlShortenerApp.urls import urlpatterns
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView, PasswordResetDoneView
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView, PasswordResetDoneView, \
+    PasswordResetConfirmView, PasswordResetCompleteView
 
 urlpatterns = [
     path('profile/', login_required(ProfileView.as_view()), name='profile_url'),
@@ -16,9 +17,14 @@ urlpatterns = [
                                                        name='change_password'),
     path('password_change_done', PasswordChangeDoneView.as_view(template_name='UserApp/change_password_done.html'),
          name='password_change_done'),
-    path('reset_password', ResetPassword.as_view(), name='reset_password'),
-    path('password_reset_done', PasswordResetDoneView.as_view(template_name='UserApp/password_reset_done.html'),
-         name='password_reset_done')
-    # TODO PasswordResetCompleteView и PasswordResetConfirm View
-    # TODO починить отправку писем
+
+    path('password_reset/', ResetPassword.as_view(), name='password_reset'),  # страница с вводом почты
+    path('password_reset_done/', PasswordResetDoneView.as_view(template_name='UserApp/password_reset_done.html'),
+         name='password_reset_done'),  # сообщение "письмо было отправлено на почту"
+
+    # ссылка из письма
+    path('password_reset/<uidb64>/<token>', PasswordResetConfirmView.as_view(template_name='UserApp/reset_new_passwords.html'), name='password_reset_confirm'),
+
+    # после введения нового пароля
+    path('password_reset_complete/', PasswordResetCompleteView.as_view(template_name='UserApp/reset_password_complete.html'), name='password_reset_complete')
 ]

@@ -12,9 +12,15 @@ from django.template.defaulttags import register
 from PetProject.settings import SITE_BASE_URL
 from django.views.generic import TemplateView
 
+
 @register.filter
 def get_range(value):
     return range(1, value+1)
+
+
+@register.filter
+def without_last_char(value):
+    return value[:-1]
 
 
 class ProfileView(ListView):
@@ -72,9 +78,9 @@ class HiddenUrlsView(ListView):
 class ResetPassword(PasswordResetView):
     template_name = 'UserApp/reset_password.html'
     subject_template_name = 'UserApp/email_template_subject.txt'  # тема письма
-    html_email_template_name = 'UserApp/password_reset_email_body.html'
+    html_email_template_name = 'UserApp/reset_password_email_body.txt'
     success_url = reverse_lazy('password_reset_done')
-    extra_email_context = {'SITE_BASE_URL':SITE_BASE_URL, }
+    extra_email_context = {'SITE_BASE_URL': SITE_BASE_URL, }
 
 
 class UserSettings(TemplateView):

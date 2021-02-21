@@ -11,12 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-# from .config import *
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from .config import EMAIL_BACKEND, EMAIL_HOST_USER, EMAIL_USE_TLS, EMAIL_PORT, EMAIL_HOST, EMAIL_HOST_PASSWORD
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('RAZZLE_DJANGO_SECRET_KEY') if os.getenv(
@@ -121,14 +119,20 @@ LOGIN_URL = '/user/login/'  # адрес перехода не авторизо�
 # для них страницу
 
 PASSWORD_RESET_TIMEOUT_DAYS = 7  # сколько дней действительна ссылка сброса пароля
-DEFAULT_FROM_EMAIL = 'urlshortener@bk.ru'  # почта, которая используется, например, для отправки подтверждения
+
+# smtp settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv('RAZZLE_EMAIL_HOST') if os.getenv('RAZZLE_EMAIL_HOST') else EMAIL_HOST
+EMAIL_PORT = int(os.getenv('RAZZLE_EMAIL_PORT')) if os.getenv('RAZZLE_EMAIL_PORT') else EMAIL_PORT
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('RAZZLE_EMAIL_HOST_USER') if os.getenv('RAZZLE_EMAIL_HOST_USER') else EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = os.getenv('RAZZLE_EMAIL_HOST_PASSWORD') if os.getenv('RAZZLE_EMAIL_HOST_PASSWORD') else EMAIL_HOST_PASSWORD
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # SITE_BASE_URL ='https://dondj.com/'
-SITE_BASE_URL='http://127.0.0.1:8000/'
+SITE_BASE_URL = 'http://127.0.0.1:8000/' if DEBUG else 'https://dondj-url.herokuapp.com/'
 # SITE_BASE_URL = 'https://dondj-url.herokuapp.com/'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
