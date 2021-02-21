@@ -130,7 +130,7 @@ EMAIL_HOST_PASSWORD = os.getenv('RAZZLE_EMAIL_HOST_PASSWORD') if os.getenv('RAZZ
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # SITE_BASE_URL ='https://dondj.com/'
-SITE_BASE_URL = 'http://127.0.0.1:8000/' if DEBUG else 'https://dondj-url.herokuapp.com/'
+SITE_BASE_URL = 'http://127.0.0.1:8000/' if DEBUG else os.getenv('RAZZLE_SITE_BASE_URL')
 # SITE_BASE_URL = 'https://dondj-url.herokuapp.com/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
