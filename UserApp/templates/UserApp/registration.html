@@ -1,15 +1,9 @@
+{% extends 'layouts/layout.html'%}
 {% load crispy_forms_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход/регистрация</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-</head>
-<body>
-<div class="container">
-        <br><br><br><br><br><br><br>
+{% block title %}Вход/регистрация{% endblock %}
+{% block content %}
+<div align="center">
+    <br>
     <form method="post">
         {%csrf_token%}
         {{form.username|as_crispy_field }}
@@ -17,13 +11,12 @@
         {{form.password1|as_crispy_field }}
         {{form.password2|as_crispy_field }}
         <div class="text-center">
-        <input type="submit" class="btn btn-success" value="Зарегистрироваться!">
+            <input type="submit" class="btn btn-success" value="Зарегистрироваться!">
+            <div>Уже есть аккаунт?</div>
+            <a href="{%url 'login_url'%}" class="btn btn-info">Войти!</a>
         </div>
     </form>
-    <div class="text-center">
-    <div>Уже есть аккаунт?</div>
-    <a href="{%url 'login_url'%}" class="btn btn-info">Войти!</a>
+
 </div>
-</div>
-</body>
-</html>
+<br>
+{% endblock %}

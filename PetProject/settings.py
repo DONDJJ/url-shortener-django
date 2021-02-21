@@ -125,8 +125,8 @@ DEFAULT_FROM_EMAIL = 'urlshortener@bk.ru'  # почта, которая испо
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # SITE_BASE_URL ='https://dondj.com/'
-# SITE_BASE_URL='http://127.0.0.1:8000/'
-SITE_BASE_URL = 'https://dondj-url.herokuapp.com/'
+SITE_BASE_URL='http://127.0.0.1:8000/'
+# SITE_BASE_URL = 'https://dondj-url.herokuapp.com/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
