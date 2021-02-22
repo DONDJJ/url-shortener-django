@@ -25,3 +25,11 @@ footer {
 	flex: 0 0 auto;
 	margin-bottom: 0px;
 }
+
+#move_button, #stat_button{
+    margin-top:5px;
+}
+
+div button[class="btn btn-outline-secondary btn-sm"]{
+    margin-left:3px;
+}
