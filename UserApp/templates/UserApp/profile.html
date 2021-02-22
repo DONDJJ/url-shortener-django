@@ -33,15 +33,35 @@
         </nav>
     {%endif%}
 
-    {%for url in page_obj %}
+    {%for url, elem_num_id in page_obj|zipping_with_its_length %}
 
         <div id = "url_profile_item" class="alert alert-info">
             Старая: <br>
             <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
             Новая: <br>
-            <a href="{{url.new_short_url}}">{{url.new_short_url}}</a> <br>
-            <a href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Переместить в архив</a>
-            <a href="{%url 'url_stat' url.pk%}" class="btn btn-danger">Статка</a>
+            <a id=elem_n_{{elem_num_id}} href="{{url.new_short_url}}">{{url.new_short_url}}</a>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="button_{{elem_num_id}}" onclick="myFunction_{{elem_num_id}}()">Скопировать</button>
+            <script>
+            function myFunction_{{elem_num_id}}() {
+              // получение элемента - ссылки
+              var copyText = document.getElementById("elem_n_{{elem_num_id}}");
+
+              // получение элемента - кнопки и изменение ее текста при копировании
+              var button_copy=document.getElementById("button_{{elem_num_id}}");
+              button_copy.innerHTML="Готово!";
+
+              // копирование в буфер
+              var copyText=copyText.getAttribute('href')
+              var el = document.createElement('textarea');
+              el.value = copyText;
+              document.body.appendChild(el);
+              el.select();
+              document.execCommand('copy');
+            }
+            </script>
+            <br>
+            <a id="move_button" href="{%url 'urldelete_url' url.pk%}" class="btn btn-danger">Переместить в архив и дезактивировать</a>
+            <a id="stat_button" href="{%url 'url_stat' url.pk%}" class="btn btn-danger">Статка</a>
         </div>
 
     {%endfor%}

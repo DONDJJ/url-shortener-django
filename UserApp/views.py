@@ -23,6 +23,11 @@ def without_last_char(value):
     return value[:-1]
 
 
+@register.filter
+def zipping_with_its_length(value):
+    return zip(value, range(len(value)))
+
+
 class ProfileView(ListView):
     template_name = 'UserApp/profile.html'
     context_object_name = 'user_active_urls'  # имя для QuerySet-a в шаблоне
