@@ -48,10 +48,10 @@ class ShortenedUrl(models.Model):
         request_url = request.get_full_path()
         final_url = SITE_BASE_URL + request_url[1:]
         try:
-            original_URL_fromDB = ShortenedUrl.objects.get(new_short_url=final_url)
+            original_URL_fromDB = ShortenedUrl.objects.get(new_short_url=final_url, is_active=True)
             return original_URL_fromDB
         except ObjectDoesNotExist:
-            return HttpResponseNotFound('<h1>Страница не найдена, проверьте адрес :(</h1>')
+            return None
 
     def change_active_status(self):
 

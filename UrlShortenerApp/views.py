@@ -45,8 +45,11 @@ def shorted_url_handler(request):
     в адресную строку исходную ссылку
     """
     original_URL_fromDB = ShortenedUrl.get_full_url_from_requested(request)
-    u = UrlClick(related_url=original_URL_fromDB)
-    return redirect(original_URL_fromDB.original_url)
+    u = UrlClick(related_url=original_URL_fromDB)  # регистрация перехода по ссылке
+    if original_URL_fromDB:
+        return redirect(original_URL_fromDB.original_url)
+    else:
+        return HttpResponseNotFound('<h1>Страница не найдена, проверьте адрес :(</h1>')
 
 
 def change_url_status_view(request, url_for_delete):
