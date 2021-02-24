@@ -1,7 +1,17 @@
 from django.http import HttpRequest
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import resolve
 from UrlShortenerApp.views import CreateUrlView, statistic_about_url
+from .models import User
+
+
+def testuser_login_for_test():
+    user = User.objects.create(username='testuser')
+    user.set_password('testuserpassword')
+    user.save()
+    cur_client = Client()
+    login_successful = cur_client.login(username="testuser", password="testuserpassword")
+    return cur_client, login_successful
 
 
 class HomePageTest(TestCase):
@@ -10,14 +20,15 @@ class HomePageTest(TestCase):
         found = resolve('/')  # преобразование URL адреса и нахождение функции/класса представления
         self.assertEqual(found.view_name, CreateUrlView.__module__ + '.' + CreateUrlView.__name__)
 
+    def test_root_is_main_page(self):
+        response = self.client.get('/')  # тестовый клиент, вместо создания HttpRequest
+        self.assertTemplateUsed(response, 'UrlShortenerApp/create_url.html')
+
 
 class StatPageTest(TestCase):
 
     def test_statistic_page_html(self):
-        request = HttpRequest()
-        response = statistic_about_url(request, 3)  # <class 'django.http.response.HttpResponse'>
-        html = response.content.decode('utf8')  # изначально это нули и единицы
-        self.assertTrue(html.startswith("\n\n<!DOCTYPE html>"))
-        self.assertIn("<title>Подробнее</title>", html)
-        self.assertTrue(html.endswith("</html>"))
-
+        cur_client, login_successful = testuser_login_for_test()
+        self.assertTrue(login_successful)
+        response = cur_client.get('http://127.0.0.1:8000/urls/stat/11')
+        self.assertTemplateUsed(response, 'UrlShortenerApp/statistic.html')
