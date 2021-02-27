@@ -32,3 +32,14 @@ class StatPageTest(TestCase):
         self.assertTrue(login_successful)
         response = cur_client.get('http://127.0.0.1:8000/urls/stat/11')
         self.assertTemplateUsed(response, 'UrlShortenerApp/statistic.html')
+
+
+class UserTests(TestCase):
+
+    def test_user_create(self):
+        us = User()
+        us.username = "test_1"
+        us.set_password("testpassword2021")
+        us.save()
+        user_from_db = User.objects.get(username="test_1")
+        self.assertTrue(isinstance(user_from_db, User))

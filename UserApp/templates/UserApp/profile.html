@@ -37,7 +37,7 @@
 
         <div id = "url_profile_item" class="alert alert-info">
             Старая: <br>
-            <a href="{{url.original_url}}"> {{url.original_url}}</a> <br>
+            <a id="old_url_{{elem_num_id}}" href="{{url.original_url}}"> {{url.original_url}}</a> <br>
             Новая: <br>
             <a id=elem_n_{{elem_num_id}} href="{{url.new_short_url}}">{{url.new_short_url}}</a>
             <button type="button" class="btn btn-outline-secondary btn-sm" id="button_{{elem_num_id}}" onclick="myFunction_{{elem_num_id}}()">Скопировать</button>

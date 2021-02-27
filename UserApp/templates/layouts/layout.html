@@ -12,18 +12,18 @@
 <div id="top_menu" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom box-shadow">
       <h5 class="my-0 mr-md-auto font-weight-normal">dondj inc.</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-          <a class="p-2 text-dark" href="{%url 'urlshortener_url'%}">Сокращение ссылок</a>
+          <a id="url_short_link_layout" class="p-2 text-dark" href="{%url 'urlshortener_url'%}">Сокращение ссылок</a>
 <!--        <a class="p-2 text-dark" href="#">Возможности данного сайта</a>-->
 <!--        <a class="p-2 text-dark" href="#">Список работ</a>-->
 <!--        <a class="p-2 text-dark" href="#">Обо мне</a>-->
       </nav>
     {%if user.is_authenticated%}
     <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 btn btn-outline-primary" href="{%url 'profile_url'%}">Профиль</a>
+    <a id="profile_link_layout" class=p-2 btn btn-outline-primary" href="{%url 'profile_url'%}">Профиль</a>
     <a class="p-2 btn btn-outline-primary" href="{%url 'logout_url'%}">Log Out</a>
         </nav>
     {%else%}
-      <a class="btn btn-outline-primary" href="{%url 'registration_url'%}">Sign up/Log in</a>
+      <a id="login_button_layout" class="btn btn-outline-primary" href="{%url 'registration_url'%}">Sign up/Log in</a>
     {%endif%}
     </div>
 <div class="container">
