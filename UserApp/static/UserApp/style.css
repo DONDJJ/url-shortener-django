@@ -33,3 +33,17 @@ footer {
 div button[class="btn btn-outline-secondary btn-sm"]{
     margin-left:3px;
 }
+
+#submit_button_avatar{
+    margin-top:5px;
+
+}
+#avatar_add_form{
+    padding-top:20px;
+    margin-left:20px;
+    margin-bottom:10px;
+}
+img {
+    max-width:100px;
+    max-height:100px;
+}

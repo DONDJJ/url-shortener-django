@@ -3,9 +3,11 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import generic
+
 from .models import User
 from django.views.generic import CreateView, ListView
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, UploadImageForm
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from UrlShortenerApp.models import ShortenedUrl
 from django.template.defaulttags import register
@@ -88,5 +90,23 @@ class ResetPassword(PasswordResetView):
     extra_email_context = {'SITE_BASE_URL': SITE_BASE_URL, }
 
 
-class UserSettings(TemplateView):
+class UserSettings(generic.FormView):
     template_name = 'UserApp/user_settings.html'
+    form_class = UploadImageForm
+
+    def post(self, request, *args, **kwargs):
+        u = request.user
+        u.image=request.FILES['new_profile_image']
+        u.save()
+        return redirect('/user/user_settings')
+
+    def form_valid(self, form):
+        return form.cleaned_data['new_profile_image']
+
+    def get_context_data(self, **kwargs):
+        context = dict()
+        context['form'] = UploadImageForm()
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('/user/user_settings')

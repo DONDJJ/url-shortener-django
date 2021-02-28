@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'PetProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'url_shortener',
+        'NAME': 'url_short',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
@@ -136,6 +136,10 @@ SITE_BASE_URL = 'http://127.0.0.1:8000/' if DEBUG else os.getenv('RAZZLE_SITE_BA
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'UserApp.User'
 import dj_database_url
 
 db_from_env = dj_database_url.config(conn_max_age=500)

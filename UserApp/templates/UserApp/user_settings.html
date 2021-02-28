@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block content %}
+
+<form method="post"  enctype="multipart/form-data" id="avatar_add_form">
+    <h4>Выберите новый аватар!</h4>
+    {% csrf_token%}
+    {{ form }}<br>
+    <button type="submit" id="submit_button_avatar">Загрузить!</button>
+</form>
 <br>
 <ul>
     <li><h2><a href="{%url 'change_password'%}">Смена пароля</a></h2></li>
