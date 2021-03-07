@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'UrlShortenerApp',
     "UserApp",
     'crispy_forms',
+    'captcha',
+
 ]
 
 MIDDLEWARE = [

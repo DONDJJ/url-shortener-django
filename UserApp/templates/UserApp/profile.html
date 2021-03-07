@@ -8,7 +8,9 @@
 {% block content %}
 <br>
 <div>
+    {% if user.image %}
     <img src="{{user.image.url}}" id="avatar_image">
+    {% endif %}
     <h2>Имя: {{user.username}}</h2>
 </div>
 <h3><a href="{%url 'user_settings'%}">Настройки</a></h3>

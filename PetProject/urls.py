@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('UserApp.urls')),
     path('urls/', include('UrlShortenerApp.urls')),
+    path('captcha/', include('captcha.urls')),
+
 ]
 if DEBUG:
     urlpatterns+=static(MEDIA_URL, document_root=MEDIA_ROOT)

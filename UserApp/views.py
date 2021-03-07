@@ -96,8 +96,13 @@ class UserSettings(generic.FormView):
 
     def post(self, request, *args, **kwargs):
         u = request.user
-        u.image=request.FILES['new_profile_image']
-        u.save()
+        form=UploadImageForm(request.POST)
+        form.new_profile_image=request.FILES.get('new_profile_image')
+        if not form.errors.get('captcha') and form.new_profile_image:
+            u.image=request.FILES['new_profile_image']
+            u.save()
+            return redirect('/user/profile')
+
         return redirect('/user/user_settings')
 
     def form_valid(self, form):
